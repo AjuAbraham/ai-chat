@@ -8,30 +8,32 @@ const openai = new OpenAI({
 
 export async function POST(request) {
   try {
-    const { message } = await request.json();
+    const { messages = [] } = await request.json();
+    const formattedMessages = messages.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
     const responseMessage = await openai.chat.completions.create({
       model: "gemini-1.5-flash",
-      message: [
+      messages: [
         {
           role: "system",
           content: piyushSirSystemPrompt,
         },
-        {
-          role: "user",
-          content: JSON.stringify(message),
-        },
+        ...formattedMessages,
       ],
     });
     return Response.json(
       {
         error: false,
-        result: JSON.parse(responseMessage.choices[0].message.content),
+        result: responseMessage.choices[0].message.content,
       },
       {
         status: 200,
       }
     );
   } catch (error) {
+    console.log("error", error);
     return Response.json(
       {
         error: true,
