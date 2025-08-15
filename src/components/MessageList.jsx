@@ -23,7 +23,7 @@ export function MessageList({ messages, isTyping, personaName, personaAvatar }) 
 
   const MarkdownComponents = {
     p: ({ children }) => (
-      <p className="prose prose-sm dark:prose-invert max-w-none mb-3 leading-relaxed">
+      <p className="prose prose-sm dark:prose-invert max-w-none mb-3 leading-relaxed" suppressHydrationWarning>
         {children}
       </p>
     ),

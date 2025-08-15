@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Persona Chat with Hitesh Sir & Piyush Sir
 
-## Getting Started
+This project is a **Next.js** application that allows users to chat with AI personas of **Hitesh Sir** and **Piyush Sir**. Using **Google's Gemini model**, each persona responds like the respective person, remembering the conversation context and replying in their style.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Two AI personas: **Hitesh Sir** and **Piyush Sir**  
+- Each persona responds as if they are the real person, following a **system prompt**  
+- Conversation memory: the AI remembers previous messages in the session  
+- Two separate API endpoints for handling messages to each persona  
+- Built using **Next.js** and **JavaScript**  
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+- **Next.js** – React framework for server-side and API routes  
+- **JavaScript** – For API endpoints and frontend logic  
+- **Gemini model** – Conversational AI via OpenAI SDK  
+- **TailwindCSS** – Optional styling for chat UI  
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. Hitesh Sir Endpoint
 
-## Deploy on Vercel
+**URL:** `POST /api/hitesh`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Description:**  
+Send chat messages to Hitesh Sir persona. The AI will respond in the style of Hitesh Sir, remembering previous messages in the session.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Request Body Example:**
+
+```json
+{
+  "messages": [
+    { "role": "user", "content": "Hello Hitesh Sir!" }
+  ]
+}
