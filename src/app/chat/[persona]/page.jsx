@@ -6,26 +6,15 @@ import { Button } from "@/components/ui/button";
 import { MessageList } from "@/components/MessageList";
 import { MessageComposer } from "@/components/MessageComposer";
 import { ArrowLeft, Settings } from "lucide-react";
-
-const PERSONAS = {
-  hitesh: {
-    name: "Hitesh",
-    bio: "Senior Full-Stack Developer & Tech Lead",
-    avatar: "",
-    fallback: "H",
-  },
-  piyush: {
-    name: "Piyush",
-    bio: "AI/ML Engineer & Research Scientist",
-    avatar: "",
-    fallback: "P",
-  },
-};
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { personas } from "@/lib/utils";
 
 export default function ChatPage() {
   const params = useParams();
   const router = useRouter();
-  const persona = params.persona && PERSONAS[params.persona] ? PERSONAS[params.persona] : null;
+  const persona = params.persona
+    ? personas.find((p) => p.id === params.persona)
+    : null;
 
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,9 +26,7 @@ export default function ChatPage() {
     }
 
     // Set welcome message only on client-side
-    setMessages([
-      
-    ]);
+    setMessages([]);
   }, [persona, router]);
 
   const handleSendMessage = async (inputMessage) => {
@@ -48,7 +35,10 @@ export default function ChatPage() {
       return;
     }
 
-    console.log("handleSendMessage triggered:", { inputMessage, persona: persona.name }); // Debug log
+    console.log("handleSendMessage triggered:", {
+      inputMessage,
+      persona: persona.name,
+    });
 
     const updatedMessages = [
       ...messages,
@@ -62,7 +52,7 @@ export default function ChatPage() {
       const endpoint =
         persona.name.toLowerCase() === "hitesh" ? "/api/hitesh" : "/api/piyush";
 
-      console.log("Fetching from endpoint:", endpoint); // Debug log
+      console.log("Fetching from endpoint:", endpoint);
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -72,7 +62,7 @@ export default function ChatPage() {
 
       const data = await res.json();
 
-      console.log("API response:", data); // Debug log
+      console.log("API response:", data);
 
       if (!data.error) {
         setMessages((prev) => [
@@ -100,51 +90,65 @@ export default function ChatPage() {
   };
 
   if (!persona) {
-    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <span className="text-muted-foreground text-lg animate-pulse">
+          Loading...
+        </span>
+      </div>
+    );
   }
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm p-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm p-4 shadow-sm relative">
+        <div className="absolute inset-0 gradient-primary opacity-5"></div>
+        <div className="relative max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.push("/")}
-              className="hover:bg-primary/10"
+              className="hover:bg-primary/20 transition-all duration-300 hover:shadow-glow rounded-lg cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-5 h-5 mr-2" />
               Back
             </Button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-semibold">{persona.fallback}</span>
-              </div>
-              <div>
-                <h1 className="font-semibold text-foreground">Chat with {persona.name}</h1>
-                <p className="text-sm text-muted-foreground">{persona.bio}</p>
-              </div>
+            <div className="flex items-center gap-4">
+              <Avatar className="w-12 h-12 rounded-full shadow-glow transition-transform hover:scale-105">
+                <AvatarImage
+                  src={persona.avatar}
+                  alt={`${persona.name} profile picture`}
+                  className="object-cover rounded-full"
+                />
+                <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">
+                  {persona.fallback}
+                </AvatarFallback>
+              </Avatar>
+              <h1 className="font-bold text-foreground text-xl">
+                Chat with {persona.name}
+              </h1>
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="hover:bg-primary/10">
-            <Settings className="w-4 h-4" />
-          </Button>
         </div>
       </header>
 
-      <MessageList
-        messages={messages}
-        isTyping={isLoading}
-        personaName={persona.name}
-        personaAvatar={persona.avatar}
-      />
+      <div className="flex-1 overflow-y-auto bg-background/95">
+        <MessageList
+          messages={messages}
+          isTyping={isLoading}
+          personaName={persona.name}
+          personaAvatar={persona.avatar}
+        />
+      </div>
 
-      <MessageComposer
-        onSendMessage={handleSendMessage}
-        isLoading={isLoading}
-        disabled={false}
-      />
+      <div className="border-t border-border/50 bg-card/50 backdrop-blur-sm p-4 shadow-sm border-gradient-primary">
+        <MessageComposer
+          onSendMessage={handleSendMessage}
+          isLoading={isLoading}
+          disabled={false}
+        />
+      </div>
     </div>
   );
 }
