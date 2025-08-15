@@ -32,7 +32,7 @@ export function MessageComposer({ onSendMessage, isLoading = false, disabled = f
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = 'auto';
-      const scrollHeight = Math.min(textarea.scrollHeight, 150);
+      const scrollHeight = Math.min(textarea.scrollHeight, 100); // reduced max height
       textarea.style.height = `${scrollHeight}px`;
     }
   };
@@ -42,17 +42,17 @@ export function MessageComposer({ onSendMessage, isLoading = false, disabled = f
   }, [message]);
 
   return (
-    <div className="border-t border-border/50 bg-card/50 backdrop-blur-sm p-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex gap-3 items-end">
+    <div className="border-t border-border/50 bg-card/50 backdrop-blur-sm p-1"> {/* reduced padding */}
+      <div className="max-w-4xl mx-auto flex flex-col gap-2 mt-2">
+        <div className="flex gap-2 items-end"> {/* reduced gap */}
           <div className="flex-1">
             <Textarea
               ref={textareaRef}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Type your message... (Enter to send, Shift+Enter for new line)"
-              className="min-h-[50px] max-h-[150px] resize-none border-border/50 focus:border-primary/50 transition-smooth"
+              placeholder="Type a message..."
+              className="min-h-[36px] max-h-[100px] resize-none border-border/50 focus:border-primary/50 transition-smooth px-2 py-1 text-sm" // reduced height & padding
               disabled={isLoading || disabled}
               aria-label="Message input"
             />
@@ -61,7 +61,7 @@ export function MessageComposer({ onSendMessage, isLoading = false, disabled = f
             onClick={handleSend}
             disabled={!message.trim() || isLoading || disabled}
             size="sm"
-            className="h-[50px] px-4 gradient-primary shadow-glow hover:shadow-xl transition-smooth"
+            className="h-[36px] w-[36px] p-0 rounded-full gradient-primary shadow-glow hover:shadow-xl transition-smooth flex items-center justify-center"
             aria-label="Send message"
           >
             {isLoading ? (
@@ -71,8 +71,8 @@ export function MessageComposer({ onSendMessage, isLoading = false, disabled = f
             )}
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          Press Enter to send • Shift+Enter for new line
+        <p className="text-xs text-muted-foreground mt-1 text-center">
+          Enter to send • Shift+Enter for new line
         </p>
       </div>
     </div>

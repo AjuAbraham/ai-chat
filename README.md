@@ -3,7 +3,11 @@
 This project is a **Next.js** application that allows users to chat with AI personas of **Hitesh Sir** and **Piyush Sir**. Using **Google's Gemini model**, each persona responds like the respective person, remembering the conversation context and replying in their style.
 
 ---
-### Webiste Url :- https://www.codeden.live/
+
+### Website URL
+[https://www.codeden.live/](https://www.codeden.live/)
+
+---
 
 ## Features
 
@@ -17,7 +21,7 @@ This project is a **Next.js** application that allows users to chat with AI pers
 
 ## Tech Stack
 
-- **Next.js** – React framework for server-side and API routes  
+- **Next.js** – React framework for server-side rendering and API routes  
 - **JavaScript** – For API endpoints and frontend logic  
 - **Gemini model** – Conversational AI via OpenAI SDK  
 - **TailwindCSS** – Optional styling for chat UI  
@@ -41,3 +45,4 @@ Send chat messages to Hitesh Sir persona. The AI will respond in the style of Hi
     { "role": "user", "content": "Hello Hitesh Sir!" }
   ]
 }
+
